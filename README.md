@@ -2,6 +2,9 @@
 
 A marketplace for renting superpowers. Hosts list a power with a daily price, and anyone can book it for a few days and leave a review afterwards.
 
+**Live demo:** https://power-share-sgq3.onrender.com
+Log in with `demo@power-share.app` / `password123`. The demo resets every night. It runs on a free server, so the first visit can take up to a minute to wake up.
+
 ![Landing page](docs/screenshots/landing.png)
 
 ## What it does
