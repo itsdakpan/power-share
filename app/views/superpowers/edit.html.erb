@@ -1,0 +1,12 @@
+<% content_for :title, "Edit #{@superpower.name}" %>
+
+<div class="wrap form-shell">
+  <%= link_to superpower_path(@superpower), class: "back-link" do %>
+    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> <%= @superpower.name %>
+  <% end %>
+  <div class="form-card rise">
+    <h1>Edit listing</h1>
+    <p class="form-card__lead">Changes show up straight away.</p>
+    <%= render "form", submit_label: "Save changes" %>
+  </div>
+</div>

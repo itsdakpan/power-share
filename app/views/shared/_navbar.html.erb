@@ -1,39 +1,33 @@
-<div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
-  <div class="container-fluid">
-    <%= link_to root_path, class: "navbar-brand" do %>
-      <%= image_tag "logo.png", alt: "Logo", class: "logo-img" %>
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <%= link_to root_path, class: "topbar__brand" do %>
+      <%= image_tag "bolt.png", alt: "", width: 30, height: 30 %>
+      <span>Power-Share</span>
     <% end %>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <% if user_signed_in? %>
-          <li class="nav-item active">
-            <%= link_to "SuperPowers", superpowers_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "My booking", bookings_path, class: "nav-link" %>
-          </li>
-            <li class="nav-item">
-            <%= link_to "Add superpower",  new_superpower_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item dropdown">
-          <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= image_tag "user_icon.png", class: "avatar", alt: "dropdown menu" %>
-          </a>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <%= link_to "My booking",  bookings_path, class: "dropdown-item" %>
-              <%= link_to "Add superpower", new_superpower_path, class: "dropdown-item" %>
-              <%= link_to "Log out", destroy_user_session_path, data: {turbo_method: :delete}, class: "dropdown-item" %>
-            </div>
-          </li>
-        <% else %>
-          <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
-          </li>
+
+    <nav class="topbar__links" aria-label="Main">
+      <%= nav_link "Browse", superpowers_path, icon: "fa-magnifying-glass" %>
+      <% if user_signed_in? %>
+        <%= nav_link "My bookings", bookings_path, icon: "fa-calendar-check" %>
+        <%= link_to new_superpower_path, class: "button button--small" do %>
+          <i class="fa-solid fa-plus" aria-hidden="true"></i><span>List a power</span>
         <% end %>
-      </ul>
-    </div>
+        <details class="topbar__user ms-1">
+          <summary aria-label="Account menu"><%= avatar_for current_user %></summary>
+          <div class="topbar__menu">
+            <div class="topbar__menu-name"><%= current_user.display_name %></div>
+            <%= link_to edit_user_registration_path do %>
+              <i class="fa-regular fa-user" aria-hidden="true"></i> Account
+            <% end %>
+            <%= button_to destroy_user_session_path, method: :delete do %>
+              <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> Log out
+            <% end %>
+          </div>
+        </details>
+      <% else %>
+        <%= link_to "Log in", new_user_session_path %>
+        <%= link_to "Sign up", new_user_registration_path, class: "button button--small ms-1" %>
+      <% end %>
+    </nav>
   </div>
-</div>
+</header>

@@ -22,13 +22,13 @@ default: &default
 
 development:
   <<: *default
-  database: twenty_one_days_later_airbnb_development
+  database: power_share_development
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: twenty_one_days_later_airbnb
+  #username: power_share
 
   # The password associated with the PostgreSQL role (username).
   #password:
@@ -56,7 +56,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: twenty_one_days_later_airbnb_test
+  database: power_share_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -80,6 +80,4 @@ test:
 #
 production:
   <<: *default
-  database: twenty_one_days_later_airbnb_production
-  username: twenty_one_days_later_airbnb
-  password: <%= ENV["TWENTY_ONE_DAYS_LATER_AIRBNB_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>

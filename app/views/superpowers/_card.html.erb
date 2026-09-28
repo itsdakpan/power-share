@@ -1,0 +1,18 @@
+<article class="power-card rise" style="--i: <%= local_assigns.fetch(:index, 0) %>">
+  <%= cover_for superpower %>
+  <div class="power-card__body">
+    <h3><%= link_to superpower.name, superpower_path(superpower) %></h3>
+    <div class="power-card__meta">
+      <span class="tag"><%= superpower.strength %></span>
+      <% if (avg = superpower.average_rating) %>
+        <span class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><%= avg %> <span class="rating__count">(<%= superpower.reviews.size %>)</span></span>
+      <% else %>
+        <span class="rating__count">New</span>
+      <% end %>
+    </div>
+    <div class="power-card__foot">
+      <span class="price"><%= money(superpower.price) %> <small>/ day</small></span>
+      <span class="power-card__host">by <%= superpower.user.display_name %></span>
+    </div>
+  </div>
+</article>

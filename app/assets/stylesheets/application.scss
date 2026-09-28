@@ -7,38 +7,11 @@
 @import "bootstrap";
 @import "font-awesome";
 
-// Your CSS partials
-@import "components/index";
-@import "pages/index";
-@import "components/superpower";
-
-
-
-body {
-  background-image: url('bg.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  letter-spacing: 1px;
-}
-.bangers-regular {
-  font-family: "Bangers", system-ui;
-  font-weight: 400;
-  font-style: normal;
-
-}
-html body.lp {
-  position: relative;
-}
-
-html body.lp::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 20, 70, 0.92);  /* 半透明の黒色（透明度0.5） */
-  z-index: -1; /* 背景画像の上、コンテンツの下に配置 */
-  pointer-events: none; /* マウスイベントを下層に透過 */
-}
+// Theme
+@import "theme/base";
+@import "theme/nav";
+@import "theme/forms";
+@import "theme/landing";
+@import "theme/listings";
+@import "theme/bookings";
+@import "theme/auth";

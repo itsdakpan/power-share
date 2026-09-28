@@ -1,0 +1,91 @@
+.hero {
+  padding: 2.5rem 0 4rem;
+  @include halftone(rgba($ink, .07), 12px);
+  border-bottom: 2px solid $ink;
+  @media (min-width: 960px) { padding: 4rem 0 5rem; }
+
+  &__grid {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+    @media (min-width: 960px) { grid-template-columns: 1.1fr 1fr; gap: 3.5rem; }
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    font-stretch: 118%;
+    line-height: .98;
+    margin-bottom: 1.25rem;
+    mark { background: $bolt; color: $ink; padding: 0 .15em; border-radius: 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+  }
+
+  &__lead { font-size: 1.15rem; color: $ink-soft; max-width: 30rem; margin-bottom: 2rem; }
+  &__actions { display: flex; flex-wrap: wrap; gap: .9rem; }
+
+  &__art {
+    border: 2px solid $ink;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: $shadow-lg;
+    transform: rotate(1.5deg);
+    background: $ink;
+    img { display: block; width: 100%; height: auto; }
+  }
+}
+
+.section { padding: 4rem 0; @media (min-width: 960px) { padding: 5.5rem 0; } }
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  h2 { font-size: clamp(1.9rem, 4.5vw, 3rem); margin: 0; }
+}
+
+.how {
+  display: grid;
+  gap: 1.25rem;
+  @media (min-width: 900px) {
+    grid-template-columns: 1.3fr 1fr;
+    grid-template-rows: auto auto;
+    .how__photo--flight { grid-row: span 2; }
+  }
+
+  &__cell {
+    @extend .panel;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  &__photo {
+    img { width: 100%; height: 100%; min-height: 14rem; object-fit: cover; display: block; border-bottom: 2px solid $ink; flex: 1; }
+  }
+  &__text { padding: 1.4rem 1.5rem 1.6rem; }
+  h3 { font-size: 1.35rem; margin-bottom: .4rem; }
+  p { margin: 0; color: $ink-soft; }
+  &__cell--bolt { background: $bolt; @include halftone(rgba($ink, .18), 9px); p { color: $ink; } }
+}
+
+.closing {
+  padding-bottom: 5rem;
+  &__panel {
+    @extend .panel;
+    display: grid;
+    overflow: hidden;
+    @media (min-width: 900px) { grid-template-columns: 1fr 1fr; }
+    img { width: 100%; height: 100%; object-fit: cover; display: block; min-height: 16rem; }
+  }
+  &__copy {
+    padding: 2.25rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+    align-items: flex-start;
+    @media (min-width: 900px) { padding: 3rem; }
+    h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); margin: 0; }
+    p { color: $ink-soft; margin: 0; max-width: 28rem; }
+  }
+}

@@ -1,16 +1,12 @@
-<div class="booking-container">
-  <h1>Add a new superpower</h1>
-  
-  <div class="form-wrapper">
-    <div class="add_newpower">
-      <%= simple_form_for (@superpower) do |f| %>
-        <p><%= f.input :name, label: 'Superpower Name' %></p>
-        <p><%= f.input :description, label: 'Description' %></p>
-        <p><%= f.input :price, label: 'Price' %></p>
-        <p><%= f.input :strength, label: 'Strength Level' %></p>
-        <p><%= f.input :photo, as: :file, label: "Upload Image", class: "superpower-image" %></p>
-        <p><%= f.button :submit, class: 'create-superpower-btn' %></p>
-      <% end %>
-    </div>
+<% content_for :title, "List a power" %>
+
+<div class="wrap form-shell">
+  <%= link_to superpowers_path, class: "back-link" do %>
+    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> All powers
+  <% end %>
+  <div class="form-card rise">
+    <h1>List a power</h1>
+    <p class="form-card__lead">Tell people what it does and what it costs per day.</p>
+    <%= render "form", submit_label: "Publish listing" %>
   </div>
 </div>

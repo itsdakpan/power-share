@@ -1,21 +1,13 @@
-
-<footer>
-        <div class="container">
-            <div class="footer-nav">
-                <ul>
-                    <li> <%= link_to "Home", root_path %></li>
-                    <li> <%= link_to "SuperPowers", superpowers_path%></li>
-                    <li>  <%= link_to "Sign up", new_user_session_path %></li>
-                </ul>
-            </div>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-youtube"></i></a>
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>
-        <div class="copyright">
-            <p class="copyrighttext">&copy; 2025 Rent a Super Power. Power to the People.</p>
-        </div>
-    </footer>
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; <%= Date.current.year %> Power-Share. Built at Le Wagon.</span>
+    <nav aria-label="Footer">
+      <%= link_to "Browse powers", superpowers_path %>
+      <% if user_signed_in? %>
+        <%= link_to "My bookings", bookings_path %>
+      <% else %>
+        <%= link_to "Log in", new_user_session_path %>
+      <% end %>
+    </nav>
+  </div>
+</footer>

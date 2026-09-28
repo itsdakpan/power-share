@@ -1,118 +1,60 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# Demo data: hosts with listed powers, past and upcoming bookings, and reviews.
+# Log in with demo@power-share.app / password123
 
-require "open-uri"
+puts "Cleaning database..."
+[Review, Booking, Superpower, User].each(&:destroy_all)
 
-puts "Cleaning up database..."
+puts "Creating users..."
+people = {
+  demo:   { first_name: "Dylan",  email: "demo@power-share.app" },
+  ines:   { first_name: "Inês",   email: "ines@example.com" },
+  tobias: { first_name: "Tobias", email: "tobias@example.com" },
+  aoife:  { first_name: "Aoife",  email: "aoife@example.com" },
+  kwame:  { first_name: "Kwame",  email: "kwame@example.com" },
+  lena:   { first_name: "Lena",   email: "lena@example.com" },
+  rafa:   { first_name: "Rafael", email: "rafa@example.com" }
+}
+users = people.transform_values { |attrs| User.create!(attrs.merge(password: "password123")) }
 
+puts "Listing powers..."
+listings = [
+  [:ines,   "Flight",            "Fly up to 300m for a few hours a day. Great for sunrise views over Lisbon or getting a kite out of a tree. Not for bad weather.", 120, "Heroic"],
+  [:tobias, "Super strength",    "Lift a small car without breaking a sweat. Popular for moving day and shifting a piano up three flights of stairs.", 64, "Legendary"],
+  [:aoife,  "Invisibility",      "Disappear completely for up to 20 minutes at a time. Perfect for surprise parties. Please don't use it for anything dodgy.", 38, "Solid"],
+  [:kwame,  "Super speed",       "Run at 90km/h in short bursts. You'll never miss the last train again.", 45.5, "Strong"],
+  [:lena,   "Talk to animals",   "Have a proper conversation with dogs, cats and most birds. Pigeons are rude, you've been warned.", 14.5, "Gentle"],
+  [:rafa,   "Freeze time",       "Pause everything around you for up to 60 seconds, twice a day. Ideal for exams and awkward moments.", 210, "Legendary"],
+  [:ines,   "Water breathing",   "Breathe underwater for the whole day. Tested off the coast of Cornwall in October, so it handles the cold.", 29, "Solid"],
+  [:tobias, "Healing touch",     "Heal cuts, bruises and hangovers with a hand on the shoulder. Doesn't work on broken hearts.", 52, "Strong"],
+  [:aoife,  "Weather control",   "Bring the sun out for a barbecue or a gentle bit of rain for the garden. Local area only, roughly one postcode.", 88, "Heroic"]
+]
+powers = listings.map do |host, name, description, price, strength|
+  Superpower.create!(user: users[host], name: name, description: description, price: price, strength: strength)
+end
+by_name = powers.index_by(&:name)
 
-Superpower.destroy_all
-User.destroy_all
+puts "Adding bookings and reviews..."
+today = Date.current
+past = [
+  [:demo,  "Flight",          -40, 1, 5, "Flew over the Algarve coast at sunset. Ines gave great tips on landing."],
+  [:demo,  "Invisibility",    -22, 1, 4, "Pulled off the best surprise party ever. Wore off a bit early."],
+  [:kwame, "Flight",          -15, 2, 5, "Worth every penny. My daughter still talks about it."],
+  [:lena,  "Super strength",  -30, 1, 5, "Moved a whole flat in an afternoon. Tobias was lovely."],
+  [:rafa,  "Talk to animals", -12, 3, 4, "My cat finally explained the 3am zoomies. Not what I expected."],
+  [:aoife, "Super speed",     -9,  1, 3, "Fast, but I kept overshooting my stop."]
+]
+past.each do |who, power, offset, days, rating, comment|
+  start = today + offset
+  Booking.new(user: users[who], superpower: by_name[power], start_date: start, end_date: start + (days - 1),
+              comment: nil).save!(validate: false)
+  Review.create!(user: users[who], superpower: by_name[power], rating: rating, comment: comment, created_at: (start + days).to_time)
+end
+# A past booking of the demo account's that still needs a review.
+Booking.new(user: users[:demo], superpower: by_name["Water breathing"], start_date: today - 6, end_date: today - 5).save!(validate: false)
 
+Booking.create!(user: users[:demo], superpower: by_name["Super strength"], start_date: today + 5, end_date: today + 6,
+                comment: "Moving house on Saturday, two sofas and a piano.")
+Booking.create!(user: users[:demo], superpower: by_name["Weather control"], start_date: today + 18, end_date: today + 18,
+                comment: "Garden party, fingers crossed for sun.")
 
-user_1 = User.create!(email: "sarah.nova42@example.com", password:123456)
-user_2 = User.create!(email: "jaxon.blade777@example.org", password:123456)
-user_3 = User.create!(email: "emma.skylark99@example.net", password:123456)
-
-
-
-puts "Creating Superpowers..."
-
-file = URI.parse("https://res.cloudinary.com/dwsdxyzpp/image/upload/v1747868669/invisibility_vpnabn.png").open
-
-superpower1 = Superpower.create!(
-  name: "Invisibility",
-  description: "Allows the user to become invisible at will, useful for stealth operations.",
-  price: 1500,
-  strength: "Low",
-  user: user_1
-)
-superpower1.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
-superpower1.save
-
-file = URI.parse("https://res.cloudinary.com/dwsdxyzpp/image/upload/v1747915502/flight_fit90h.png").open
-
-superpower2 = Superpower.create!(
-  name: "Flight",
-  description: "Gives the user the ability to fly at high altitudes and speeds.",
-  price: 3000,
-  strength: "High",
-  user: user_1
-)
-
-superpower2.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
-superpower2.save
-
-file = URI.parse("https://res.cloudinary.com/dwsdxyzpp/image/upload/v1747868667/strength_bshvqf.png").open
-
-superpower3 = Superpower.create!(
-  name: "Super Strength",
-  description: "Enhances the user's physical power far beyond human limits.",
-  price: 2500,
-  strength: "High",
-  user: user_2
-)
-
-superpower3.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
-superpower3.save
-
-file = URI.parse("https://res.cloudinary.com/dwsdxyzpp/image/upload/v1747868667/telepathy_r5b7ci.png").open
-
-superpower4 = Superpower.create!(
-  name: "Telepathy",
-  description: "Enables the user to read minds and communicate mentally.",
-  price: 2200,
-  strength: "Medium",
-  user: user_2
-)
-
-superpower4.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
-superpower4.save
-
-file = URI.parse("https://res.cloudinary.com/dwsdxyzpp/image/upload/v1747868669/time_manipulation_zrfzms.png").open
-
-superpower5 = Superpower.create!(
-  name: "Time Manipulation",
-  description: "Allows limited control over time — pausing or slowing it briefly.",
-  price: 5000,
-  strength: "Very High",
-  user: user_3
-)
-
-superpower5.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
-superpower5.save
-
-file = URI.parse("https://res.cloudinary.com/dwsdxyzpp/image/upload/v1747915916/teleportation_ibfnrs.png").open
-
-superpower6 = Superpower.create!(
-  name: "Teleportation",
-  description: "Grants the ability to instantly travel between distant locations.",
-  price: 3200,
-  strength: "High",
-  user: user_3
-)
-
-superpower6.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
-superpower6.save
-
-file = URI.parse("https://res.cloudinary.com/dwsdxyzpp/image/upload/v1747915760/waterbreath_eh4gm6.png").open
-
-superpower7 = Superpower.create!(
-  name: "Water Breathing",
-  description: "Enables the user to breathe underwater indefinitely.",
-  price: 1200,
-  strength: "Low",
-  user: user_3
-)
-
-superpower7.photo.attach(io: file, filename: "nes.png", content_type: "image/png")
-superpower7.save
-
-puts "Done!"
+puts "Done. Log in with demo@power-share.app / password123"

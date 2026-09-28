@@ -1,28 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title><%= content_for(:title) || "Twenty One Days Later Airbnb" %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title><%= content_for?(:title) ? "#{yield(:title)} | Power-Share" : "Power-Share | Rent a superpower" %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Power-Share is a marketplace for renting superpowers. Book flight for a birthday or super strength for moving day, straight from the people who have them.">
+    <meta name="theme-color" content="#EEF0F3">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,700..900&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+
     <%= yield :head %>
 
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload"%>
+    <link rel="icon" href="<%= image_path('bolt.png') %>" type="image/png">
+    <link rel="apple-touch-icon" href="<%= image_path('bolt.png') %>">
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-  <%= render "shared/navbar" %>
-       <p class="notice"><%= notice %></p>
-       <p class="alert"><%= alert %></p>
-
-    <%= yield %>
-    <%= render "shared/footer" %>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <%= render "shared/navbar" unless content_for?(:bare) %>
+    <%= render "shared/flashes" %>
+    <main id="main">
+      <%= yield %>
+    </main>
+    <%= render "shared/footer" unless content_for?(:bare) %>
   </body>
 </html>

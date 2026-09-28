@@ -1,0 +1,123 @@
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  h1 { font-size: clamp(2.2rem, 5.5vw, 3.4rem); font-stretch: 125%; margin: 0 0 .35rem; }
+  p { margin: 0; color: $ink-soft; }
+}
+
+.search {
+  display: flex;
+  gap: .6rem;
+  margin-bottom: 2rem;
+  max-width: 34rem;
+  .form-control { flex: 1; }
+}
+
+.power-grid {
+  display: grid;
+  gap: 1.5rem;
+  @media (min-width: 640px) { grid-template-columns: repeat(2, 1fr); }
+  @media (min-width: 1000px) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.power-card {
+  @extend .panel;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .2s $ease, box-shadow .2s $ease;
+  &:hover { transform: translate(-2px, -2px); box-shadow: $shadow-lg; }
+
+  &__body { padding: 1.1rem 1.25rem 1.25rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
+  h2, h3 {
+    font-size: 1.3rem;
+    margin: 0;
+    a { color: $ink; }
+    a::after { content: ""; position: absolute; inset: 0; }
+  }
+  &__meta { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+  &__foot { margin-top: auto; display: flex; justify-content: space-between; align-items: baseline; padding-top: .5rem; }
+  &__host { color: $ink-soft; font-size: .85rem; }
+}
+
+.price {
+  font-family: $headers-font;
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+  small { font-family: $body-font; font-weight: 500; font-size: .85rem; color: $ink-soft; }
+}
+
+// Listing cover: the uploaded photo, or a halftone panel with the power's icon.
+.cover {
+  aspect-ratio: 4 / 3;
+  border-bottom: 2px solid $ink;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: $bolt-wash;
+  @include halftone(rgba($ink, .14), 10px);
+  img { width: 100%; height: 100%; object-fit: cover; }
+  i { font-size: 3.4rem; color: $ink; filter: drop-shadow(3px 3px 0 $bolt); }
+  &--1 { background-color: $bolt; i { filter: drop-shadow(3px 3px 0 $surface); } }
+  &--2 { background-color: $surface; }
+  &--lg { aspect-ratio: 16 / 10; border: 2px solid $ink; border-radius: 16px; box-shadow: $shadow; i { font-size: 5.5rem; } }
+}
+
+.empty {
+  @extend .panel;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  h2 { font-size: 1.6rem; margin-bottom: .5rem; }
+  p { color: $ink-soft; margin-bottom: 1.25rem; }
+}
+
+// Listing page
+.listing {
+  display: grid;
+  gap: 2rem;
+  grid-template-areas: "main" "book" "reviews";
+  @media (min-width: 960px) {
+    grid-template-columns: 1fr 22.5rem;
+    grid-template-areas: "main book" "reviews book";
+    column-gap: 3rem;
+    row-gap: 0;
+    align-items: start;
+  }
+  &__main { grid-area: main; }
+  &__book { grid-area: book; }
+  &__reviews { grid-area: reviews; }
+
+  h1 { font-size: clamp(2.2rem, 5.5vw, 3.4rem); font-stretch: 125%; margin: 1.5rem 0 .75rem; }
+  &__meta { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-bottom: 1.25rem; }
+  &__host { display: flex; align-items: center; gap: .6rem; color: $ink-soft; font-size: .925rem; }
+  &__description { font-size: 1.05rem; max-width: 40rem; white-space: pre-line; }
+}
+
+.book-card {
+  @extend .panel;
+  padding: 1.5rem;
+  @media (min-width: 960px) { position: sticky; top: 5.5rem; }
+  .price { font-size: 1.8rem; }
+  hr { border: 0; border-top: 2px dashed $line; margin: 1.25rem 0; opacity: 1; }
+  .dates { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; > div { min-width: 0; } .form-control { width: 100%; min-width: 0; padding-left: .6rem; padding-right: .4rem; } }
+  .total { display: flex; justify-content: space-between; align-items: baseline; font-weight: 700; margin: 1rem 0; font-variant-numeric: tabular-nums; }
+}
+
+.reviews { margin-top: 1rem; @media (min-width: 960px) { margin-top: 2rem; } h2 { font-size: 1.6rem; margin-bottom: 1rem; } }
+.review {
+  padding: 1.1rem 0;
+  border-top: 2px solid $ink;
+  &:last-child { border-bottom: 2px solid $ink; }
+  &__head { display: flex; justify-content: space-between; gap: 1rem; align-items: center; margin-bottom: .35rem; }
+  &__who { display: flex; gap: .6rem; align-items: center; font-weight: 700; }
+  &__stars { color: $bolt-deep; letter-spacing: .1em; }
+  p { margin: 0; }
+  time { color: $ink-faint; font-size: .8rem; font-weight: 500; }
+}
