@@ -1,15 +1,4 @@
-// Import Google fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700|Work+Sans:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
-// Define fonts for body and headers
-$body-font: "Bangers", system-ui;
-$headers-font: "Bangers", system-ui;
-// To use a font file (.woff) uncomment following lines
-// @font-face {
-//   font-family: "Font Name";
-//   src: font-url('FontFile.eot');
-//   src: font-url('FontFile.eot?#iefix') format('embedded-opentype'),
-//        font-url('FontFile.woff') format('woff'),
-//        font-url('FontFile.ttf') format('truetype')
-// }
-// $my-font: "Font Name";
+// Loaded from Google Fonts in the layout <head>.
+// Archivo (expanded, extra bold) for display, DM Sans for everything else.
+$body-font: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+$headers-font: "Archivo", "Arial Black", "Helvetica Neue", Arial, sans-serif;

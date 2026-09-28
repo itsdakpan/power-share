@@ -1,28 +1,31 @@
-// This is where you override default Bootstrap variables
-// 1. Find all Bootstrap variables that you can override at the end of each component's documentation under the `Sass variables` anchor
-// e.g. here are the ones you can override for the navbar https://getbootstrap.com/docs/5.2/components/navbar/#sass-variables
-// 2. These variables are defined with default value (see https://robots.thoughtbot.com/sass-default)
-// 3. You can override them below!
-
-// General style
 $font-family-sans-serif: $body-font;
 $headings-font-family:   $headers-font;
-$body-bg:                $light-gray;
-$font-size-base:         1rem;
+$body-bg:                $paper;
+$body-color:             $ink;
+$link-color:             $ink;
 
-// Colors
-$body-color: $gray;
-$primary:    $blue;
-$success:    $green;
-$info:       $yellow;
-$danger:     $red;
-$warning:    $orange;
+$primary:   $bolt;
+$secondary: $ink-soft;
+$danger:    $danger;
+$info:      $bolt;
+$success:   $ink;
+$warning:   $bolt;
 
-// Buttons & inputs' radius
-$border-radius-sm:            .0625rem;
-$border-radius:               .125rem;
-$border-radius-lg:            .25rem;
-$border-radius-xl:            .5rem;
-$border-radius-xxl:           1rem;
+// Radius rule: tags 6px, buttons and inputs 10px, cards 16px.
+$border-radius:     10px;
+$border-radius-sm:  6px;
+$border-radius-lg:  16px;
+$border-radius-xl:  16px;
+$border-radius-xxl: 16px;
 
-// Override other variables below!
+$input-bg:                 $surface;
+$input-border-color:       $ink;
+$input-border-width:       2px;
+$input-color:              $ink;
+$input-placeholder-color:  $ink-faint;
+$input-padding-y:          .7rem;
+$input-padding-x:          .9rem;
+$input-focus-border-color: $ink;
+$input-focus-box-shadow:   0 0 0 4px rgba($bolt, .35);
+$form-label-font-weight:   600;
+$form-label-margin-bottom: .4rem;

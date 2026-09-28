@@ -1,0 +1,25 @@
+.booking-list { display: grid; gap: 1.25rem; margin-bottom: 3rem; }
+
+.booking {
+  @extend .panel;
+  display: grid;
+  overflow: hidden;
+  @media (min-width: 720px) { grid-template-columns: 13rem 1fr; }
+  .cover { border-bottom: 2px solid $ink; @media (min-width: 720px) { border-bottom: 0; border-right: 2px solid $ink; aspect-ratio: auto; height: 100%; } }
+  &__body { padding: 1.25rem 1.5rem; display: grid; gap: .75rem; }
+  &__top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem; align-items: flex-start; }
+  h3 { font-size: 1.3rem; margin: 0 0 .2rem; a { color: $ink; } }
+  &__dates { color: $ink-soft; font-size: .925rem; font-variant-numeric: tabular-nums; }
+  &__note { margin: 0; font-style: italic; color: $ink-soft; }
+  &__actions { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+}
+
+.review-form {
+  border-top: 2px dashed $line;
+  padding-top: 1rem;
+  display: grid;
+  gap: .75rem;
+  textarea { min-height: 5rem; }
+}
+
+.section-label { font-size: 1.5rem; margin: 0 0 1rem; }

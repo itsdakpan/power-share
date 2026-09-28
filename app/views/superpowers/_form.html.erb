@@ -1,0 +1,45 @@
+<%= form_with model: @superpower do |f| %>
+  <% if @superpower.errors.any? %>
+    <div class="form-errors" role="alert">
+      <strong>Couldn't save the listing.</strong>
+      <ul><% @superpower.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, "Power name", class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", placeholder: "e.g. Flight", required: true, maxlength: 60 %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, class: "form-label" %>
+    <%= f.text_area :description, class: "form-control", rows: 4, required: true, maxlength: 1000,
+                    placeholder: "What can someone do with it, and any limits?" %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :price, "Price per day (£)", class: "form-label" %>
+    <%= f.number_field :price, class: "form-control", min: 1, max: 9999, step: 0.5, required: true %>
+  </div>
+
+  <fieldset class="mb-3">
+    <legend class="form-label">Strength</legend>
+    <div class="chips">
+      <% Superpower::STRENGTHS.each do |level| %>
+        <%= f.radio_button :strength, level %>
+        <%= f.label :strength, level, value: level %>
+      <% end %>
+    </div>
+  </fieldset>
+
+  <div class="mb-3">
+    <%= f.label :photo, "Photo (optional)", class: "form-label" %>
+    <%= f.file_field :photo, class: "form-control", accept: "image/*" %>
+    <p class="form-hint">No photo? We'll show a comic panel with an icon for the power.</p>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit submit_label, class: "button" %>
+    <%= link_to "Cancel", (@superpower.persisted? ? superpower_path(@superpower) : superpowers_path), class: "button button--plain" %>
+  </div>
+<% end %>

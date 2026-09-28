@@ -1,0 +1,11 @@
+<div class="flashes" aria-live="polite">
+  <% { notice: notice, alert: alert }.each do |type, message| %>
+    <% next if message.blank? %>
+    <div class="flash <%= 'flash--alert' if type == :alert %>" role="status" data-controller="dismiss">
+      <span><%= message %></span>
+      <button type="button" class="icon-button" data-action="dismiss#close" aria-label="Dismiss">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+  <% end %>
+</div>

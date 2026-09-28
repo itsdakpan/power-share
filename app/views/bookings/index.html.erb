@@ -1,60 +1,33 @@
-<h1>Your Bookings</h1>
+<% content_for :title, "My bookings" %>
 
-<div class="booking_container">
-  <% @bookings.each do |booking| %>
-    <div class="mybooking_box">
-      <div class="booking_image">
-        <% if booking.superpower.photo.present? %>
-          <%= cl_image_tag booking.superpower.photo.key, height: 300, width: 200, crop: :fill, alt: booking.superpower.name, class: "superpower-image" %>
-        <% else %>
-          <p>No image available</p>
-        <% end %>
-      </div>
-      <div class="booking_info">
-        <p class="booking_detail">Superpower: &nbsp;<%= booking.superpower.name %></p>
-        <p class="booking_detail">Start Date: &nbsp;<%= booking.start_date %></p>
-        <p class="booking_detail">End Date: &nbsp;<%= booking.end_date %></p>
-        <p class="booking_detail">Comment: &nbsp;<%= booking.comment %></p>
-        <p class="booking_detail">Total Price: &nbsp;£<%= booking.total_price %></p>
-
-        <%= link_to "Delete Booking", booking_path(booking), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
-
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#reviewModal-<%= booking.id %>">
-          Leave a Review
-        </button>
-      </div>
+<div class="wrap page">
+  <div class="page-head rise">
+    <div>
+      <h1>My bookings</h1>
+      <p>Powers you've booked, and reviews waiting to be written.</p>
     </div>
+    <%= link_to "Browse powers", superpowers_path, class: "button button--plain" %>
+  </div>
 
-    <!-- Modal (unique ID per booking) -->
-    <div class="modal fade" id="reviewModal-<%= booking.id %>" tabindex="-1" aria-labelledby="modalLabel-<%= booking.id %>" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="modalLabel-<%= booking.id %>">Leave a Review</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="review-form">
-              <%= simple_form_for [booking.superpower, Review.new] do |f| %>
-                <%= f.input :comment, label_html: { class: "d-none" }, placeholder: "Review here...", class: "review" %>
-                <%= f.input :rating, collection: 0..5 %>
-              <div class="text-end">
-  <%= f.submit "Send", class: "btn btn-primary" %>
-</div>
-              <% end %>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <%# <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> %>
-          </div>
-        </div>
-      </div>
+  <% if @upcoming.empty? && @past.empty? %>
+    <div class="empty rise">
+      <h2>Nothing booked yet.</h2>
+      <p>Find a power you like and pick some dates.</p>
+      <%= link_to "Browse powers", superpowers_path, class: "button" %>
     </div>
-
   <% end %>
-</div>
 
-<div class="back-link mt-4">
-  <%= link_to "Back", superpowers_path, class: "btn btn-primary" %>
+  <% if @upcoming.any? %>
+    <h2 class="section-label">Coming up</h2>
+    <div class="booking-list">
+      <%= render partial: "bookings/booking", collection: @upcoming %>
+    </div>
+  <% end %>
+
+  <% if @past.any? %>
+    <h2 class="section-label">Past</h2>
+    <div class="booking-list">
+      <%= render partial: "bookings/booking", collection: @past %>
+    </div>
+  <% end %>
 </div>

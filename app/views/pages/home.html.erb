@@ -1,72 +1,72 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
-<body class ="lp">
-<section class= "FV">
-<div class="banner" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0, 0.3)), url('<%= image_path("fv_superpower.png") %>')">
-  <div>
-  <div class="container">
-    <%= link_to 'BOOK A SUPERPOWER!', superpowers_path, class: "btn-flat1" %>
-  </div>
-<%# </div> %>
-</section>
-
-
-<section class="features">
-        <div class="container">
-            <div class="feature-grid">
-                <div class="feature-text left">
-                    <h2>NEED A HERO?<br>BECOME ONE.<br>RENT A POWER.</h2>
-                </div>
-                <div class="feature-image right">
-                <%= image_tag "feauture1.jpg", alt: "test" %>
-                </div>
-            </div>
-
-            <div class="feature-grid reverse">
-                <div class="feature-image left">
-                  <%= image_tag "feauture2.jpg", alt: "test" %>
-                </div>
-                <div class="feature-text right">
-                    <h2>YOU'VE GOT THE CHOICE.<br>WE'VE GOT THE POWER.<br>LET'S SAVE THE DAY.</h2>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
- <section class="reviews">
-        <div class="container">
-            <div class="reviews-grid">
-                <div class="reviews_container">
-                    <p>"My kids LOVED it.<br>Next time: invisibility!"<br>— Sarah, Mom of Two</p>
-                </div>
-                <div class="reviews_container">
-                   <p>"Best birthday ever.<br>He flew for 10 minutes!"<br>— Mike, Proud Dad</p>
-                </div>
-                <div class="reviews_container">
-                    <p>"Never seen her so confident.<br>Telekinesis = total win."<br>— Lena, Aunt Extraordinaire</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-  <section class="powers">
-  <div class="container">
-    <h2 class="section-title">SUPER POWERS</h2>
-    <div class="powers-grid">
-      <% @superpowers.each do |superpower| %>
-        <div class="power-card">
-          <% if superpower.photo.present? %>
-            <%= cl_image_tag superpower.photo.key, height: 200, width: 180, crop: :fit, alt: superpower.name, class: "superpower-image" %>
-          <% else %>
-            <p>No image available</p>
-          <% end %>
-        </div>
-      <% end %>
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <h1 class="rise">Rent a <mark>superpower</mark> for the weekend.</h1>
+      <p class="hero__lead rise" style="--i: 1">Flight for a birthday. Super strength for moving day. Book real powers from the people who have them.</p>
+      <div class="hero__actions rise" style="--i: 2">
+        <%= link_to superpowers_path, class: "button" do %>
+          Browse powers <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        <% end %>
+        <%= link_to "List your power", (user_signed_in? ? new_superpower_path : new_user_registration_path), class: "button button--plain" %>
+      </div>
+    </div>
+    <div class="hero__art rise" style="--i: 1">
+      <%= image_tag "hero-comic.jpg", alt: "Comic-style heroes flying and firing laser vision over a city", width: 1400, height: 704, fetchpriority: "high" %>
     </div>
   </div>
 </section>
 
+<% if @superpowers.any? %>
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Top rated right now.</h2>
+        <%= link_to "See all powers", superpowers_path, class: "button button--plain button--small" %>
+      </div>
+      <div class="power-grid">
+        <%= render partial: "superpowers/card", collection: @superpowers, as: :superpower, locals: { index: 0 } %>
+      </div>
+    </div>
+  </section>
+<% end %>
 
-    </body>
+<section class="section pt-0">
+  <div class="wrap">
+    <div class="section-head"><h2>How it works.</h2></div>
+    <div class="how">
+      <div class="how__cell how__photo how__photo--flight">
+        <%= image_tag "flight.jpg", alt: "Two people flying over a sunny city skyline", loading: "lazy", width: 1400, height: 764 %>
+        <div class="how__text">
+          <h3>Pick a power</h3>
+          <p>Browse flight, strength, invisibility and more. Every listing shows the price per day and what past renters thought.</p>
+        </div>
+      </div>
+      <div class="how__cell how__photo">
+        <%= image_tag "strength.jpg", alt: "A man lifting a huge metal slab above his head in the street", loading: "lazy", width: 1400, height: 764 %>
+        <div class="how__text">
+          <h3>Book your dates</h3>
+          <p>Choose a start and end date and see the total before you confirm.</p>
+        </div>
+      </div>
+      <div class="how__cell how__cell--bolt">
+        <div class="how__text">
+          <h3>Save the day, then review it</h3>
+          <p>Once you've used a power, leave a star rating so the next person knows what they're getting.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing">
+  <div class="wrap">
+    <div class="closing__panel">
+      <%= image_tag "comic-title.jpg", alt: "Comic panel with the words Super Powers above a running hero", loading: "lazy", width: 1400, height: 764 %>
+      <div class="closing__copy">
+        <h2>Got a power going spare?</h2>
+        <p>List it in a couple of minutes. Set your own daily price and let the bookings come to you.</p>
+        <%= link_to "List your power", (user_signed_in? ? new_superpower_path : new_user_registration_path), class: "button" %>
+      </div>
+    </div>
+  </div>
+</section>

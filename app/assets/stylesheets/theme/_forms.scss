@@ -1,0 +1,61 @@
+.form-shell { max-width: 36rem; margin: 0 auto; padding-top: 2.5rem; padding-bottom: 5rem; }
+
+.form-card {
+  @extend .panel;
+  padding: 1.75rem;
+  @media (min-width: 640px) { padding: 2.5rem; }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: .5rem; }
+  .form-card__lead { color: $ink-soft; margin-bottom: 1.75rem; }
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+  font-size: .9rem;
+  font-weight: 600;
+  color: $ink-soft;
+}
+
+label, .form-label { font-weight: 600; font-size: .925rem; color: $ink; }
+abbr[title] { text-decoration: none; color: $bolt-deep; cursor: default; }
+.form-control, .form-select { border-radius: 10px; }
+.form-text, .form-hint { color: $ink-soft; font-size: .85rem; margin-top: .35rem; }
+.invalid-feedback { color: $danger; font-weight: 500; }
+.form-control.is-invalid { border-color: $danger; }
+.form-check-input { border: 2px solid $ink; }
+.form-check-input:checked { background-color: $bolt; border-color: $ink; }
+
+.form-errors {
+  padding: .9rem 1.1rem;
+  border-radius: 10px;
+  border: 2px solid $danger;
+  background: #FBE7E5;
+  color: $danger;
+  font-size: .9rem;
+  margin-bottom: 1.5rem;
+  ul { margin: .25rem 0 0; padding-left: 1.1rem; }
+}
+
+.form-actions { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-top: 1.75rem; }
+
+// Segmented picker for strength and star rating (radio buttons styled as chips).
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  input { position: absolute; opacity: 0; pointer-events: none; }
+  label {
+    cursor: pointer;
+    padding: .4rem .8rem;
+    border-radius: 6px;
+    border: 2px solid $ink;
+    background: $surface;
+    font-size: .875rem;
+    transition: background .15s $ease, transform .15s $ease;
+    &:hover { background: $bolt-wash; }
+  }
+  input:checked + label { background: $bolt; box-shadow: 2px 2px 0 $ink; }
+  input:focus-visible + label { outline: 3px solid $bolt; outline-offset: 2px; }
+}

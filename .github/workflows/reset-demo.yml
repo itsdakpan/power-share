@@ -1,0 +1,28 @@
+name: Reset demo data
+
+# Every night at 03:00 UTC the live demo goes back to its starting data,
+# so anything visitors add or change is cleared.
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: production
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      CLOUDINARY_URL: ${{ secrets.CLOUDINARY_URL }}
+      SECRET_KEY_BASE_DUMMY: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Reset demo data
+        if: ${{ env.DATABASE_URL != '' }}
+        run: bin/rails demo:reset

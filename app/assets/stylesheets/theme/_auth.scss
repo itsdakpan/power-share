@@ -1,0 +1,40 @@
+.auth {
+  min-height: 100dvh;
+  display: grid;
+  @media (min-width: 960px) { grid-template-columns: 1fr 1fr; }
+
+  &__art {
+    display: none;
+    @media (min-width: 960px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 2.5rem;
+      background: $bolt;
+      @include halftone(rgba($ink, .16), 10px);
+      border-right: 2px solid $ink;
+    }
+    .auth__frame { border: 2px solid $ink; border-radius: 16px; overflow: hidden; box-shadow: $shadow-lg; transform: rotate(-1.5deg); }
+    .auth__frame img { width: 100%; display: block; }
+    blockquote { font-family: $headers-font; font-weight: 800; font-stretch: 118%; font-size: 1.7rem; line-height: 1.1; margin: 0; max-width: 20ch; }
+  }
+
+  &__panel { display: flex; flex-direction: column; justify-content: center; padding: 2rem 1.25rem; @media (min-width: 640px) { padding: 3rem; } }
+  &__form {
+    width: 100%;
+    max-width: 26rem;
+    margin: 0 auto;
+    h1 { font-size: clamp(2rem, 5vw, 2.7rem); font-stretch: 125%; margin-bottom: .5rem; }
+    .auth__lead { color: $ink-soft; margin-bottom: 1.75rem; }
+  }
+  &__links {
+    margin-top: 1.5rem;
+    font-size: .925rem;
+    color: $ink-soft;
+    display: grid;
+    gap: .4rem;
+    a { font-weight: 700; color: $ink; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; text-decoration-color: $bolt; }
+  }
+  .topbar__brand { margin-bottom: 2rem; }
+}

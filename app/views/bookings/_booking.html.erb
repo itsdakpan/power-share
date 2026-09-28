@@ -1,0 +1,48 @@
+<% superpower = booking.superpower %>
+<article class="booking rise" id="<%= dom_id(booking) %>">
+  <%= cover_for superpower %>
+  <div class="booking__body">
+    <div class="booking__top">
+      <div>
+        <h3><%= link_to superpower.name, superpower_path(superpower) %></h3>
+        <div class="booking__dates">
+          <%= booking.start_date.strftime("%-d %b") %> to <%= booking.end_date.strftime("%-d %b %Y") %>, <%= pluralize(booking.days, "day") %>
+        </div>
+      </div>
+      <span class="price"><%= money(booking.total_price) %></span>
+    </div>
+    <% if booking.comment.present? %>
+      <p class="booking__note">"<%= booking.comment %>"</p>
+    <% end %>
+
+    <div class="booking__actions">
+      <% unless booking.past? %>
+        <%= button_to booking_path(booking), method: :delete, class: "button button--danger button--small",
+                      form: { data: { turbo_confirm: "Cancel this booking?" } } do %>
+          Cancel booking
+        <% end %>
+      <% end %>
+    </div>
+
+    <% if !booking.started? %>
+      <p class="muted mb-0">You can leave a review once your booking starts.</p>
+    <% elsif @reviewed_ids.include?(superpower.id) %>
+      <p class="muted mb-0"><i class="fa-solid fa-check" aria-hidden="true"></i> You've reviewed this power.</p>
+    <% else %>
+      <%= form_with model: [superpower, Review.new], class: "review-form" do |f| %>
+        <fieldset>
+          <legend class="form-label">Rate <%= superpower.name %></legend>
+          <div class="chips">
+            <% (1..5).each do |n| %>
+              <%= f.radio_button :rating, n, id: "rating_#{booking.id}_#{n}", required: true %>
+              <%= f.label :rating, "#{n} ★", for: "rating_#{booking.id}_#{n}" %>
+            <% end %>
+          </div>
+        </fieldset>
+        <%= f.label :comment, "Your review", class: "form-label mb-0", for: "review_comment_#{booking.id}" %>
+        <%= f.text_area :comment, id: "review_comment_#{booking.id}", class: "form-control", required: true, maxlength: 500, placeholder: "How did it go?" %>
+        <div><%= f.submit "Post review", class: "button button--small" %></div>
+      <% end %>
+    <% end %>
+  </div>
+</article>

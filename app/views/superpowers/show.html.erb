@@ -1,76 +1,87 @@
-<h1>Book this Superpower</h1>
-<div class="two-column-layout">
-  <div class="left-container" style="color: black !important;">
-    <!-- <h1>Book this Superpower</h1>
-      <div class='superpower-form-container'>-->
+<% content_for :title, @superpower.name %>
 
-        <h3><%= @superpower.name %></h3>
-    <br>
-    <p><strong>Description</strong>
-      <br>
-      <em><%= @superpower.description.truncate(100) %></em>
-    </p>
-    <br>
-    <p><strong>Price - </strong> <%= @superpower.price.round %></p>
-    <br>
-    <p><strong>Strength - </strong> <%= @superpower.strength %></p>
-
-  <ul>
-  <% @superpower.reviews.each do |review| %>
-    <li>
-      <button type="button" class="review-btn">
-        <%= review.comment %> <%= '⭐️' * review.rating %>
-      </button>
-    </li>
+<div class="wrap page">
+  <%= link_to superpowers_path, class: "back-link" do %>
+    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> All powers
   <% end %>
-</ul>
-</div>
 
-<div class="right-container">
+  <div class="listing">
+    <div class="listing__main rise">
+      <%= cover_for @superpower, large: true %>
+      <h1><%= @superpower.name %></h1>
+      <div class="listing__meta">
+        <span class="tag tag--bolt"><%= @superpower.strength %></span>
+        <% if (avg = @superpower.average_rating) %>
+          <span class="rating"><i class="fa-solid fa-star" aria-hidden="true"></i><%= avg %> <span class="rating__count">(<%= pluralize(@reviews.size, "review") %>)</span></span>
+        <% end %>
+        <span class="listing__host"><%= avatar_for @superpower.user %> Hosted by <%= @superpower.user.display_name %></span>
+      </div>
+      <p class="listing__description"><%= @superpower.description %></p>
 
+    </div>
 
+    <aside class="listing__book book-card rise" style="--i: 1">
+      <div class="price"><%= money(@superpower.price) %> <small>/ day</small></div>
+      <hr>
+      <% if @superpower.owned_by?(current_user) %>
+        <p class="muted">This is your listing.</p>
+        <div class="form-actions mt-0">
+          <%= link_to edit_superpower_path(@superpower), class: "button button--plain" do %>
+            <i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> Edit
+          <% end %>
+          <%= button_to superpower_path(@superpower), method: :delete, class: "button button--danger",
+                        form: { data: { turbo_confirm: "Delete #{@superpower.name}? Its bookings and reviews go too." } } do %>
+            <i class="fa-regular fa-trash-can" aria-hidden="true"></i> Delete
+          <% end %>
+        </div>
+      <% elsif user_signed_in? %>
+        <%= form_with model: [@superpower, @booking], data: { controller: "total", total_price_value: @superpower.price.to_f } do |f| %>
+          <% if @booking.errors.any? %>
+            <div class="form-errors" role="alert">
+              <ul><% @booking.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul>
+            </div>
+          <% end %>
+          <div class="dates">
+            <div>
+              <%= f.label :start_date, "From", class: "form-label" %>
+              <%= f.date_field :start_date, class: "form-control", min: Date.current, required: true, data: { total_target: "start", action: "change->total#update" } %>
+            </div>
+            <div>
+              <%= f.label :end_date, "To", class: "form-label" %>
+              <%= f.date_field :end_date, class: "form-control", min: Date.current, required: true, data: { total_target: "end", action: "change->total#update" } %>
+            </div>
+          </div>
+          <div class="mt-3">
+            <%= f.label :comment, "Note for the host (optional)", class: "form-label" %>
+            <%= f.text_area :comment, class: "form-control", rows: 2, maxlength: 500, placeholder: "e.g. For my son's 8th birthday party" %>
+          </div>
+          <div class="total"><span data-total-target="days">Pick your dates</span><span data-total-target="amount">£0</span></div>
+          <%= f.submit "Book this power", class: "button button--block" %>
+        <% end %>
+      <% else %>
+        <p class="muted">Log in to pick your dates and book.</p>
+        <%= link_to "Log in to book", new_user_session_path, class: "button button--block" %>
+      <% end %>
+    </aside>
 
-
-<%= simple_form_for [@superpower, @booking] do |f| %>
-  <%= f.input :start_date, as: :string, input_html: { type: 'date' } %>
-  <%= f.input :end_date, as: :string, input_html: { type: 'date' } %>
-  <%= f.input :comment, as: :text %>
-  <p><strong>Total Price:</strong> <span id="total-price">0</span></p>
-  <%= f.submit "Book Superpower", class: "btn btn-primary" %>
-<% end %>
-
-
+    <div class="listing__reviews">
+      <section class="reviews" id="reviews">
+        <h2>Reviews</h2>
+        <% if @reviews.any? %>
+          <% @reviews.each do |review| %>
+            <div class="review">
+              <div class="review__head">
+                <span class="review__who"><%= avatar_for review.user %> <%= review.user.display_name %></span>
+                <span class="review__stars" aria-label="<%= review.rating %> out of 5"><%= stars(review.rating) %></span>
+              </div>
+              <p><%= review.comment %></p>
+              <time datetime="<%= review.created_at.iso8601 %>"><%= review.created_at.strftime("%B %Y") %></time>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="muted">No reviews yet. Book it and be the first.</p>
+        <% end %>
+      </section>
+    </div>
   </div>
-
 </div>
-
-
-
-
-<script>
-  document.addEventListener("turbo:load", function () {
-    const startDateInput = document.querySelector("#booking_start_date");
-    const endDateInput = document.querySelector("#booking_end_date");
-    const totalPriceElement = document.getElementById("total-price");
-    const pricePerDay = <%= @superpower.price.to_i %>;
-
-    function updateTotalPrice() {
-      const startDate = new Date(startDateInput.value);
-      const endDate = new Date(endDateInput.value);
-
-      if (!isNaN(startDate) && !isNaN(endDate)) {
-        const timeDiff = endDate - startDate;
-        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
-        if (days > 0) {
-          const total = days * pricePerDay;
-          totalPriceElement.innerText = total;
-        } else {
-          totalPriceElement.innerText = 0;
-        }
-      }
-    }
-
-    startDateInput.addEventListener("change", updateTotalPrice);
-    endDateInput.addEventListener("change", updateTotalPrice);
-  });
-</script>
